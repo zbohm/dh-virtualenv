@@ -98,6 +98,11 @@ class Deployment(object):
                 virtualenv.append('--system-site-packages')
             else:
                 virtualenv.append('--no-site-packages')
+                # New version of virtualenv does not support parameter --no-site-packages.
+                try:
+                    subprocess.check_call(virtualenv)
+                except subprocess.CalledProcessError:
+                    virtualenv.pop()
 
             if self.setuptools:
                 virtualenv.append('--setuptools')
